@@ -1,6 +1,27 @@
 /// <reference path="typings/jasmine/jasmine.d.ts" />
 'use strict';
 
+
+describe('isBlank', function() {
+    it('empty string is blank', function  (){
+        var blankResult = isBlank("");
+        expect(blankResult).toBe(true);
+    });
+    it('undefined is blank', function  (){
+        var blankResult = isBlank(undefined);
+        expect(blankResult).toBe(true);
+    });
+    it('space is blank', function  (){
+        var blankResult = isBlank(" ");
+        expect(blankResult).toBe(true);
+    });        
+    it('valid result is not blank', function  (){
+        var blankResult = isBlank("1:0");
+        expect(blankResult).toBe(false);        
+    })
+});
+    
+
 describe('NormaliseResult', function() {
     it('1:0  should be normalised to 1:0', function() {
         var normalisedResult = NormaliseResult("1:0");
@@ -86,6 +107,15 @@ describe('GetPointsForPrognosis', function() {
     it('0:1 result and 0:1 expect should give 3 points', function() {
         var points = GetPointsForPrognosis("0:1", "0:1", 3, 1, 0);
         expect(points).toBe(3);        
-    });                         
+    }); 
+    
+    it('empty string result and 0:1 expect should give 0 points', function() {
+        var points = GetPointsForPrognosis("", "0:1", 3, 1, 0);
+        expect(points).toBe(0);        
+    });
+    it('undefined string result and 0:1 expect should give 0 points', function() {
+        var points = GetPointsForPrognosis(undefined, "0:1", 3, 1, 0);
+        expect(points).toBe(0);        
+    });                                 
 });
     
