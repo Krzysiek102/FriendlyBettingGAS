@@ -5,8 +5,29 @@ function NormaliseResult (result){
     return result.replace(/ /g,'').replace('-',':');
 }
 
-function isBlank(str) {
-    return (!str || /^\s*$/.test(str));
+function IsValid(str) {
+    if (str === undefined) return false;
+    var pattern = /^\d+:\d+$/;
+    return pattern.test(str);
+}
+
+function ParseResult (result){
+    var resultSplitted = result.split(":");
+    var scored = Number(resultSplitted[0]);
+    var lost = Number(resultSplitted[1]);
+    var type;
+    if (scored > lost){
+        type = 1;
+    }else if (scored === lost){
+        type = 0;
+    }else {
+        type = 2;
+    };
+    return {
+        type: type,
+        scored: scored,
+        lost: lost
+    };
 }
 
 function GetResultType (result){
@@ -22,21 +43,37 @@ function GetResultType (result){
     }
 }
 
-function GetPointsForPrognosis (exact, prognosis, exactMatch, looseMatch, noMatch){
+function GetPointsForPrognosis(exact, prognosis){
+    var noMatch = 0;
+    var looseMatch = 1;
+    var halfExactMatch = 2;
+    var exactMatch = 3;
+    
     exact = NormaliseResult(exact);
     prognosis = NormaliseResult(prognosis);
-    if (isBlank(exact) || isBlank(prognosis)){
+    if (!IsValid(exact) || !IsValid(prognosis)){
         return noMatch;
     };
-    if (exact === prognosis)
-    {
-        return exactMatch;
-    };
-    var exactType = GetResultType(exact);
-    var prognosisType = GetResultType(prognosis);
-    if (exactType === prognosisType){
-        return looseMatch;
+    
+    var parsedExact = ParseResult(exact);
+    var parsedPrognosis = ParseResult(prognosis);
+    if (parsedExact.type === parsedPrognosis.type){
+        if (parsedExact.scored === parsedPrognosis.scored 
+            && parsedExact.lost === parsedPrognosis.lost){
+            return exactMatch;
+        }else{
+            if (parsedExact.scored === parsedPrognosis.scored 
+            || parsedExact.lost === parsedPrognosis.lost){
+                return halfExactMatch;
+            }else{
+                return looseMatch;
+            }
+        }
     }else{
         return noMatch;
-    }
+    };
+}
+
+function GetWeightedPointsForPrognosis (exact, prognosis, weight){
+    return weight * GetPointsForPrognosis(exact, prognosis);
 }
