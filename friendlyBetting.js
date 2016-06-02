@@ -30,19 +30,6 @@ function ParseResult (result){
     };
 }
 
-function GetResultType (result){
-    var resultSplitted = result.split(":");
-    var scored = resultSplitted[0];
-    var lost = resultSplitted[1]; 
-    if (scored > lost){
-        return 1;
-    }else if (scored === lost){
-        return 0;
-    }else {
-        return 2;
-    }
-}
-
 function GetPointsForPrognosis(exact, prognosis){
     var noMatch = 0;
     var looseMatch = 1;

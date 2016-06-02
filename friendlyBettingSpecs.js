@@ -72,25 +72,7 @@ describe('ParseResult', function() {
         expect(parsedResult.lost).toBe(2);
     });      
         
-});
-    
-   
-
-describe('GetResultType', function() {
-    it('1:0  result is type 1', function() {
-        var resultType = GetResultType("1:0");
-        expect(resultType).toBe(1);
-    });
-    it('1:1  result is type 0', function() {
-        var resultType = GetResultType("0:0");
-        expect(resultType).toBe(0);
-    });
-    it('0:1  result is type 2', function() {
-        var resultType = GetResultType("0:1");
-        expect(resultType).toBe(2);
-    });                
-});
-    
+});    
     
 
 describe('GetPointsForPrognosis', function() {
