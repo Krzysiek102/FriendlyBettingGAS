@@ -1,12 +1,14 @@
-'use strict';
-
 function NormaliseResult (result){
-    if (result===undefined) return undefined;
-    return result.replace(/ /g,'').replace('-',':');
+    if (result===undefined){
+        return undefined;
+    } 
+    return result.replace(/ /g,'').replace('-',':').replace(';',':');
 }
 
 function IsValid(str) {
-    if (str === undefined) return false;
+    if (str === undefined){
+        return false;
+    } 
     var pattern = /^\d+:\d+$/;
     return pattern.test(str);
 }
@@ -22,12 +24,12 @@ function ParseResult (result){
         type = 0;
     }else {
         type = 2;
-    };
+    }
     return {
         type: type,
         scored: scored,
         lost: lost
-    };
+    }
 }
 
 function GetPointsForPrognosis(exact, prognosis){
@@ -40,17 +42,15 @@ function GetPointsForPrognosis(exact, prognosis){
     prognosis = NormaliseResult(prognosis);
     if (!IsValid(exact) || !IsValid(prognosis)){
         return noMatch;
-    };
+    }
     
     var parsedExact = ParseResult(exact);
     var parsedPrognosis = ParseResult(prognosis);
     if (parsedExact.type === parsedPrognosis.type){
-        if (parsedExact.scored === parsedPrognosis.scored 
-            && parsedExact.lost === parsedPrognosis.lost){
+        if (parsedExact.scored === parsedPrognosis.scored && parsedExact.lost === parsedPrognosis.lost){
             return exactMatch;
         }else{
-            if (parsedExact.scored === parsedPrognosis.scored 
-            || parsedExact.lost === parsedPrognosis.lost){
+            if (parsedExact.scored === parsedPrognosis.scored || parsedExact.lost === parsedPrognosis.lost){
                 return halfExactMatch;
             }else{
                 return looseMatch;
@@ -58,7 +58,7 @@ function GetPointsForPrognosis(exact, prognosis){
         }
     }else{
         return noMatch;
-    };
+    }
 }
 
 function GetWeightedPointsForPrognosis (exact, prognosis, weight){
