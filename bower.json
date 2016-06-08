@@ -1,3 +1,6 @@
 {
-  "name": "friendlybettinggas"
+  "name": "friendlybettinggas",
+  "devDependencies": {
+    "jasmine-core": "jasmine#^2.4.1"
+  }
 }
