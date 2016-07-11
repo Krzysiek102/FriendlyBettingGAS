@@ -179,7 +179,133 @@ describe('GetWeightedPointsForPrognosis', function() {
         var points = GetWeightedPointsForPrognosis("2:1", "2:1", 3);
         expect(points).toBe(9);
     });       
-        
 });
+
+
+describe('NumberOfExactMatch', function() {
+    it('2:1, 1:0 exact and 2:1, 1:0 prognosis has 2 exact match', function() {
+        var points = NumberOfExactMatch(["2:1", "1:0"], ["2:1", "1:0"]);
+        expect(points).toBe(2);
+    });   
+    it('2:1, 1:0 exact and 2:1, 1:1 prognosis has 1 exact match', function() {
+        var points = NumberOfExactMatch(["2:1", "1:0"], ["2:1", "1:1"]);
+        expect(points).toBe(1);
+    }); 
+    it('2:1, 1:0 exact and 1:2, 0:1 prognosis has 0 exact match', function() {
+        var points = NumberOfExactMatch(["2:1", "1:0"], ["1:2", "0:1"]);
+        expect(points).toBe(0);
+    });               
+});
+
+describe('NumberOfLooseMatch', function() {
+    it('2:1, 1:0 exact and 3:1, 2:1 prognosis has 2 loose match', function() {
+        var points = NumberOfLooseMatch(["2:1", "1:0"], ["3:1", "2:1"]);
+        expect(points).toBe(2);
+    });   
+    it('2:1, 1:0 exact and 3:1, 1:1 prognosis has 1 loose match', function() {
+        var points = NumberOfLooseMatch(["2:1", "1:0"], ["3:1", "1:1"]);
+        expect(points).toBe(1);
+    }); 
+    it('2:1, 1:0 exact and 1:1, 0:1 prognosis has 0 loose match', function() {
+        var points = NumberOfLooseMatch(["2:1", "1:0"], ["1:1", "0:1"]);
+        expect(points).toBe(0);
+    });               
+});
+
+describe('GoalsAverage', function() {
+    it('2:1, 1:1 should give 2.5 goals average', function() {
+        var points = GoalsAverage(["2:1", "1:1"]);
+        expect(points).toBe(2.5);
+    });
+    it('aaa, 1:1 should give 2 goals average', function() {
+        var points = GoalsAverage(["aaa", "1:1"]);
+        expect(points).toBe(2);
+    });  
+    it('aaa should give 0 goals average', function() {
+        var points = GoalsAverage(["aaa"]);
+        expect(points).toBe(0);
+    });     
+    it('3:2, 1:1, 0:0, 4:0 should give 2.75 goals average', function() {
+        var points = GoalsAverage(["3:2", "1:1", "0:0", "4:0"]);
+        expect(points).toBe(2.75);
+    });              
+});
+
+describe('NumberOfDraws', function() {
+    it('2:1, 1:1 has 1 draw', function() {
+        var points = NumberOfDraws(["2:1", "1:1"]);
+        expect(points).toBe(1);
+    });     
+    it('2:1, 1:1, 1:3, 0:0 has 2 draws', function() {
+        var points = NumberOfDraws(["2:1", "1:1", "1:3", "0:0"]);
+        expect(points).toBe(2);
+    });           
+});
+
+describe('NumberOfWinsToZero', function() {
+    it('2:1, 1:0 has 1 win to zero', function() {
+        var points = NumberOfWinsToZero(["2:1", "1:0"]);
+        expect(points).toBe(1);
+    });     
+    it('2:1, 1:1, 0:3, 1:0 has 2 wins to zero', function() {
+        var points = NumberOfWinsToZero(["2:1", "1:1", "0:3", "1:0"]);
+        expect(points).toBe(2);
+    });           
+});
+
+describe('GoalDifference', function() {
+    it('0:0 has 0 goal difference', function() {
+        var points = GoalDifference(0,0);
+        expect(points).toBe(0);
+    });   
+    it('1:1 has 0 goal difference', function() {
+        var points = GoalDifference(1,1);
+        expect(points).toBe(0);
+    }); 
+    it('3:1 has 2 goal difference', function() {
+        var points = GoalDifference(3,1);
+        expect(points).toBe(2);
+    });  
+    it('2:5 has 3 goal difference', function() {
+        var points = GoalDifference(2,5);
+        expect(points).toBe(3);
+    });                          
+});
+
+describe('NumberOfMatchesWithOneGoalDifference', function() {
+    it('3:1, 1:0 has 1 match with 1 goal difference', function() {
+        var points = NumberOfMatchesWithOneGoalDifference(["3:1", "1:0"]);
+        expect(points).toBe(1);
+    });     
+    it('2:1, 1:1, 0:3, 1:0 has 2 matches with 1 goal difference', function() {
+        var points = NumberOfMatchesWithOneGoalDifference(["2:1", "1:1", "0:3", "1:0"]);
+        expect(points).toBe(2);
+    });           
+});
+
+describe('NumberOfMatchesWithTwoGoalDifference', function() {
+    it('3:1, 1:0 has 1 match with 2 goal difference', function() {
+        var points = NumberOfMatchesWithTwoGoalDifference(["3:1", "1:0"]);
+        expect(points).toBe(1);
+    });     
+    it('3:1, 1:1, 1:3, 1:0 has 2 matches with 2 goal difference', function() {
+        var points = NumberOfMatchesWithTwoGoalDifference(["3:1", "1:1", "1:3", "1:0"]);
+        expect(points).toBe(2);
+    });           
+});
+
+describe('NumberOfMatchesWithMoreThenTwoGoalDifference', function() {
+    it('4:1, 1:0 has 1 match with 2 goal difference', function() {
+        var points = NumberOfMatchesWithMoreThenTwoGoalDifference(["4:1", "1:0"]);
+        expect(points).toBe(1);
+    });     
+    it('4:1, 1:1, 0:3, 1:0 has 2 matches with 2 goal difference', function() {
+        var points = NumberOfMatchesWithMoreThenTwoGoalDifference(["4:1", "1:1", "0:3", "1:0"]);
+        expect(points).toBe(2);
+    });           
+});
+
+
+    
     
     
